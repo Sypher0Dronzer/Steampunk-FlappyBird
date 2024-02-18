@@ -26,14 +26,14 @@ class Game {
       this.player.flap();
     });
     //keyboard controls
-    this.canvas.addEventListener("keydown", (e) => {
+    window.addEventListener("keydown", (e) => {
       if (e.key == "Enter" || e.key == " ") {
         this.player.flap();
       }
     });
     //touch events
     this.canvas.addEventListener("touchstart", (e) => {
-      this.player.flap();
+        this.player.flap();
     });
   }
   resize(width, height) {
@@ -69,7 +69,7 @@ class Game {
     this.obstacles=[]
     //deletes all the previous obstacles
     const firstX=100
-    const obstacleSpacing=100
+    const obstacleSpacing=600 * this.ratio
     for(let i=0;i< this.numberOfObstacles;i++){
         this.obstacles.push(new Obstacle(this,firstX+ i*obstacleSpacing))
     }
