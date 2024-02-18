@@ -17,7 +17,18 @@ class Game{
             this.resize(e.currentTarget.innerWidth,e.currentTarget.innerHeight)
         });
 
+        //mouse controls
         this.canvas.addEventListener('mousedown',(e)=>{
+            this.player.flap()
+        })
+        //keyboard controls
+        this.canvas.addEventListener('keydown',(e)=>{
+            if(e.key=='Enter'|| e.key==' '){
+                this.player.flap()
+            }
+        })
+        //touch events
+        this.canvas.addEventListener('touchstart',(e)=>{
             this.player.flap()
         })
         
