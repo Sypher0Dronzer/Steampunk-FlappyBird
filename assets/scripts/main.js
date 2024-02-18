@@ -14,6 +14,8 @@ class Game {
     this.numberOfObstacles = 10;
     this.gravity;
     this.speed;
+    this.score;
+    this.gameOver;
 
     this.resize(window.innerWidth, window.innerHeight);
 
@@ -33,7 +35,7 @@ class Game {
     });
     //touch events
     this.canvas.addEventListener("touchstart", (e) => {
-        this.player.flap();
+      this.player.flap();
     });
   }
   resize(width, height) {
@@ -41,6 +43,9 @@ class Game {
     this.canvas.height = height;
     // states get reset when the canvas is resized so its better to change state only when resized for performance reasons
     this.ctx.fillStyle = "red";
+    this.ctx.font = "15px Bungee";
+    this.ctx.textAlign='right'
+
 
     this.width = this.canvas.width;
     this.height = this.canvas.height;
@@ -50,29 +55,38 @@ class Game {
 
     this.background.resize();
     this.player.resize();
-    this.createObstacles()
-    this.obstacles.forEach(obstacle=>{
-        obstacle.resize()
-    })
+    this.createObstacles();
+    this.obstacles.forEach((obstacle) => {
+      obstacle.resize();
+    });
+
+    this.score = 0;
+    this.gameOver = false;
   }
   render() {
     this.background.update();
     this.background.draw();
+    this.drawStatusText()
     this.player.update();
     this.player.draw();
-    this.obstacles.forEach(obstacle=>{
-        obstacle.update()
-        obstacle.draw()
-    })
+    this.obstacles.forEach((obstacle) => {
+      obstacle.update();
+      obstacle.draw();
+    });
   }
   createObstacles() {
-    this.obstacles=[]
+    this.obstacles = [];
     //deletes all the previous obstacles
-    const firstX=100
-    const obstacleSpacing=600 * this.ratio
-    for(let i=0;i< this.numberOfObstacles;i++){
-        this.obstacles.push(new Obstacle(this,firstX+ i*obstacleSpacing))
+    const firstX = 100;
+    const obstacleSpacing = 600 * this.ratio;
+    for (let i = 0; i < this.numberOfObstacles; i++) {
+      this.obstacles.push(new Obstacle(this, firstX + i * obstacleSpacing));
     }
+  }
+  drawStatusText(){
+    this.ctx.save()
+    this.ctx.fillText('Score: '+ this.score,this.width-10,30)
+    this.ctx.restore()
   }
 }
 
@@ -87,7 +101,7 @@ window.addEventListener("load", function () {
   function animate() {
     game.ctx.clearRect(0, 0, canvas.width, canvas.height);
     game.render();
-    requestAnimationFrame(animate);
+    if(!game.gameOver){requestAnimationFrame(animate);}
   }
   requestAnimationFrame(animate);
 });

@@ -19,7 +19,11 @@ class Obstacle {
     if(this.isOffScreen()){
         this.markedForDeletion=true
         this.game.obstacles=this.game.obstacles.filter(obstacles=> !obstacles.markedForDeletion)
-        console.log(this.game.obstacles.length);
+        this.game.score+=1
+        if(this.game.obstacles.length==0)
+        {
+            this.game.gameOver=true
+        }
     }
   }
   draw() {
