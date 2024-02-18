@@ -16,6 +16,7 @@ class Game {
     this.speed;
     this.score;
     this.gameOver;
+    this.timer
 
     this.resize(window.innerWidth, window.innerHeight);
 
@@ -38,7 +39,7 @@ class Game {
       this.player.flap();
     });
   }
-  resize(width, height) {
+  resize(width, height) {   
     this.canvas.width = width;
     this.canvas.height = height;
     // states get reset when the canvas is resized so its better to change state only when resized for performance reasons
@@ -62,8 +63,12 @@ class Game {
 
     this.score = 0;
     this.gameOver = false;
+    this.timer=0
   }
-  render() {
+  render(deltaTime) {
+    if(deltaTime){
+        this.timer += deltaTime
+    }
     this.background.update();
     this.background.draw();
     this.drawStatusText()
@@ -83,9 +88,13 @@ class Game {
       this.obstacles.push(new Obstacle(this, firstX + i * obstacleSpacing));
     }
   }
+  formatTimer(){
+    return (this.timer * 0.001).toFixed(2) }
   drawStatusText(){
     this.ctx.save()
     this.ctx.fillText('Score: '+ this.score,this.width-10,30)
+    this.ctx.textAlign='left'
+    this.ctx.fillText('Time: '+ this.formatTimer(),10,30)
     this.ctx.restore()
   }
 }
@@ -97,10 +106,12 @@ window.addEventListener("load", function () {
   canvas.width = 720;
   const game = new Game(canvas, ctx);
   game.render();
-
-  function animate() {
-    game.ctx.clearRect(0, 0, canvas.width, canvas.height);
-    game.render();
+  let lastTime=0
+  function animate(timeStamp) {
+   const deltaTime= timeStamp-lastTime
+    lastTime=timeStamp
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    game.render(deltaTime);
     if(!game.gameOver){requestAnimationFrame(animate);}
   }
   requestAnimationFrame(animate);
