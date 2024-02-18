@@ -3,14 +3,16 @@
     padding: 0;
     box-sizing: border-box;    
 }
-body{
+/* body{
     background:brown;
-}
+} */
 #canvas1{
     position: absolute;
     top: 0;
     left: 0;
-    background: blue;
     max-width: 100%;
     max-height: 100%;
+}
+.assets{
+    display: none;
 }
